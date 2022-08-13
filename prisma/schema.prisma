@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Keeps {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  note       String?
+  is_link    Boolean?  @default(false)
+  keep_type  String?   @default("inbox")
+  sort_no    BigInt?
+  user_id    String?   @db.Uuid
+  User       User?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Link       Link[]
+}
+
+model User {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  password   String?
+  email      String?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  name       String?
+  Keeps      Keeps[]
+}
+
+model Link {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title       String?
+  description String?
+  target_url  String?
+  keep_id     String?   @db.Uuid
+  image       String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  Keeps       Keeps?    @relation(fields: [keep_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
