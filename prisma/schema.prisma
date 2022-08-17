@@ -7,25 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Keeps {
+model keep {
   id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   note       String?
   is_link    Boolean?  @default(false)
   keep_type  String?   @default("inbox")
-  sort_no    BigInt?
+  sort_no    Int?
   user_id    String?   @db.Uuid
-  User       User?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Link       Link[]
+  profile    profile?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Link       Link[] 
 }
-
-model User {
+  
+model profile {
   id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   password   String?
   email      String?
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   name       String?
-  Keeps      Keeps[]
+  Keeps      keep[]
 }
 
 model Link {
@@ -36,5 +36,5 @@ model Link {
   keep_id     String?   @db.Uuid
   image       String?
   created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  Keeps       Keeps?    @relation(fields: [keep_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Keeps       keep?     @relation(fields: [keep_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

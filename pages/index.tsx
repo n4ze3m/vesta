@@ -1,54 +1,49 @@
 import DashboardHome from "components/Home";
 import DashboardLayout from "components/Layout/Dashboard";
-import { withSessionSsr } from "lib/withSession";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { Auth } from "@supabase/ui"
+import { useRouter } from "next/router";
+import React from "react";
+import { User } from "@supabase/supabase-js";
+import { useQuery } from "react-query";
+import axios from "axios";
 
-export const getServerSideProps = withSessionSsr(
-  async function getServerSideProps({ req }) {
-    const user = req.session.user;
-    if (!user) {
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
+const Home: NextPage = ({ a }: any) => {
+  const [user, setUser] = React.useState<User | null>();
+  const router = useRouter();
+  const session = Auth.useUser();
+  React.useEffect(() => {
+    if (session.user === null) {
+      router.push("/login");
+    } else {
+      setUser(session.user);
     }
+  }, []);
 
-    return {
-      props: {
-        user: user,
-      },
-    };
-  }
-);
 
-const Home: NextPage = ({ user }: any) => {
-  // const [isConnected, setIsConnected] = useState(false)
-  // const [err, setErr] = useState('')
-  // const [haveError, setHaveError] = useState(false)
-
-  // useEffect(() => {
-  //   checkConnection()
-  // }, [])
-
-  // const checkConnection = async () => {
-  //   try {
-
-  //   } catch (e) {
-  //     setErr('Sorry, your browser is not supported')
-  //     setHaveError(true)
-  //   }
-  // }
-
+  const {
+    data,
+    status
+  } = useQuery(["fetchInbox", user], async () => {
+    const response = await axios.get("/api/keep/get", {
+      headers: {
+        user_id: user && user.id || "",
+      }
+    })
+    return response.data;
+  }, {
+    enabled: Boolean(user),
+  })
+  console.log(data)
   return (
-    <DashboardLayout user={user}>
-
+    <DashboardLayout user={a}>
       <Head>
         <title>Home / Dashboard</title>
       </Head>
-      <DashboardHome />
+      {
+        JSON.stringify(data)
+      }
     </DashboardLayout>
   );
 };

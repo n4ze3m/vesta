@@ -1,50 +1,36 @@
 import React from "react";
 import {
   TextInput,
-  PasswordInput,
-  Checkbox,
-  Anchor,
   Paper,
   Title,
-  Text,
   Container,
-  Group,
   Button,
+  Text
 } from "@mantine/core";
-import Link from "next/link";
-import axios from "axios";
 import { useForm } from "@mantine/form";
 import { useMutation } from "react-query";
 import { showNotification } from "@mantine/notifications";
-import { useRouter } from "next/router";
-import { useLocalStorage } from "@mantine/hooks";
+import { useSupabaseClient } from "lib/supabase";
 
 type LoginProps = {
   email: string;
-  password: string;
 };
 
 export default function LoginBody() {
-  const router = useRouter();
 
-  const [_, setUserId]  = useLocalStorage({
-    key: "userId",
-  });
+  const supabase = useSupabaseClient()
 
   const onLogin = async (values: LoginProps) => {
-    const response = await axios.post("/api/login", values);
-    return response.data;
+    await supabase.auth.signIn(values);
   };
 
   const { mutate: login, isLoading } = useMutation(onLogin, {
-    onSuccess: ({ id }) => {
+    onSuccess: () => {
       showNotification({
-        message: "Welcome back!",
+        message: "Check your email to verify your account",
         color: "green",
         title: "Success",
       });
-      setUserId(id);
-      router.push("/");
     },
     onError: (e: any) => {
       const message =
@@ -63,7 +49,6 @@ export default function LoginBody() {
   const form = useForm({
     initialValues: {
       email: "",
-      password: "",
     },
     validate: {
       email: (value: string) =>
@@ -80,13 +65,10 @@ export default function LoginBody() {
           fontWeight: 900,
         })}
       >
-        Login to Keeppt
+        Ready to get started?
       </Title>
       <Text color="dimmed" size="sm" align="center" mt={5}>
-        Do not have an account yet?{" "}
-        <Link href="/register">
-          <Anchor<"a"> href="/register">Create account</Anchor>
-        </Link>
+        Start saving links and notes for free.
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
@@ -97,13 +79,7 @@ export default function LoginBody() {
             placeholder="you@example.com"
             required
           />
-          <PasswordInput
-            label="Password"
-            placeholder="Your password"
-            required
-            mt="md"
-            {...form.getInputProps("password")}
-          />
+
           <Button
             loading={isLoading}
             type="submit"
@@ -112,7 +88,7 @@ export default function LoginBody() {
             mt="xl"
             size="md"
           >
-            Login
+            Send magic link
           </Button>
         </form>
       </Paper>

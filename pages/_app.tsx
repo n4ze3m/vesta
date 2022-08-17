@@ -4,10 +4,12 @@ import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import { SupabaseProvider } from "lib/supabase";
 
 export const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+    <SupabaseProvider>
     <QueryClientProvider client={queryClient}>
       <MantineProvider
         withGlobalStyles
@@ -22,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </NotificationsProvider>
       </MantineProvider>
     </QueryClientProvider>
+    </SupabaseProvider>
   );
 }
 
