@@ -187,7 +187,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                     }}
                     icon={<Mailbox size={14} />}
                   >
-                    Move to Keep
+                    Move to Home
                   </Menu.Item>
                 )}
 
@@ -289,7 +289,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {showUIElements && fields.length > 0 && fields}
-              {fields.length === 0 && <Empty text="You have no keeps here" />}
+              {fields.length === 0 && <Empty text="Oops, Seems like you don't have any note / links here" />}
               {provided.placeholder}
             </div>
           )}
