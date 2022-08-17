@@ -106,7 +106,6 @@ const useStyles = createStyles((theme) => ({
 
 type Props = {
   children: React.ReactNode;
-  user: any;
 };
 
 interface MainLinkProps {
@@ -169,7 +168,7 @@ const data = [
     path: "/settings",
   },
 ];
-function DashboardLayout({ children, user }: Props) {
+function DashboardLayout({ children }: Props) {
   const session = Auth.useUser()
   const [avatar, setAvatar] = React.useState("https://avatars.dicebear.com/api/jdenticon/xdsds-sdsdsds-dsdsds.svg?background=%230000ff")
   React.useEffect(() => {

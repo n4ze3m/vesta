@@ -74,7 +74,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
   const keeps = data;
   const { user } = Auth.useUser();
 
-  const onDragFinish =  async (result: any) => {
+  const onDragFinish = async (result: any) => {
     await axios.post(`/api/keep/drag`, result, {
       headers: {
         user_id: user!.id,
@@ -82,7 +82,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
     })
   }
   const { mutateAsync: whenMoveMutation } = useMutation(onDragFinish);
-  
+
   const deleteKeep = async ({ keep_id, keep_type }: any) => {
     await axios.post(`/api/keep/delete`, {
       keep_id,
@@ -105,12 +105,20 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
     })
   }
 
+  const onMove = async (result: any) => {
+    await axios.post(`/api/keep/move`, result, {
+      headers: {
+        user_id: user!.id,
+      }
+    })
+  }
+
 
   const { mutateAsync: deleteKeepMutation } = useMutation(deleteKeep);
 
   const { mutateAsync: updateKeepMutation } = useMutation(updateKeep);
 
-  // const { mutateAsync: moveKeepsMutation } = useMoveKeepsMutation({});
+  const { mutateAsync: moveKeepsMutation } = useMutation(onMove);
 
   const form = useForm({
     initialValues: {
@@ -171,12 +179,11 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                       let current_keep_type = item.keep_type;
                       let keep_id = item.id;
                       form.removeListItem("keep", index);
-                      // await moveKeepsMutation({
-                      //   current_keep_type,
-                      //   keep_id,
-                      //   new_keep_type: "inbox",
-                      //   user_id: userId,
-                      // });
+                      await moveKeepsMutation({
+                        current_keep_type,
+                        keep_id,
+                        new_keep_type: "inbox",
+                      });
                     }}
                     icon={<Mailbox size={14} />}
                   >
@@ -190,12 +197,11 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                       let current_keep_type = item.keep_type;
                       let keep_id = item.id;
                       form.removeListItem("keep", index);
-                      // await moveKeepsMutation({
-                      //   current_keep_type,
-                      //   keep_id,
-                      //   new_keep_type: "link",
-                      //   user_id: userId,
-                      // });
+                      await moveKeepsMutation({
+                        current_keep_type,
+                        keep_id,
+                        new_keep_type: "link",
+                      });
                     }}
                     icon={<Link size={14} />}
                   >
@@ -209,12 +215,11 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                       let current_keep_type = item.keep_type;
                       let keep_id = item.id;
                       form.removeListItem("keep", index);
-                      // await moveKeepsMutation({
-                      //   current_keep_type,
-                      //   keep_id,
-                      //   new_keep_type: "archive",
-                      //   user_id: userId,
-                      // });
+                      await moveKeepsMutation({
+                        current_keep_type,
+                        keep_id,
+                        new_keep_type: "archive",
+                      });
                     }}
                     icon={<Archive size={14} />}
                   >
@@ -258,7 +263,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
               from: source.index,
               to: destination.index,
             });
-            if (movement(source.index, destination.index) === "up" ) {
+            if (movement(source.index, destination.index) === "up") {
               const keep_id = form.values.keep[source.index].id;
               await whenMoveMutation({
                 keep_id: keep_id,

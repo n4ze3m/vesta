@@ -9,7 +9,7 @@ import { User } from "@supabase/supabase-js";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-const Home: NextPage = ({ a }: any) => {
+const Home: NextPage = () => {
   const [user, setUser] = React.useState<User | null>();
   const router = useRouter();
   const session = Auth.useUser();
@@ -35,9 +35,8 @@ const Home: NextPage = ({ a }: any) => {
   }, {
     enabled: Boolean(user),
   })
-  console.log(data)
   return (
-    <DashboardLayout user={a}>
+    <DashboardLayout>
       <Head>
         <title>Home / Dashboard</title>
       </Head>
