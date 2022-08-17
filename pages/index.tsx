@@ -19,7 +19,7 @@ const Home: NextPage = () => {
     } else {
       setUser(session.user);
     }
-  }, []);
+  }, [session]);
 
 
   const {

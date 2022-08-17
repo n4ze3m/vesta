@@ -69,7 +69,6 @@ export default function BrowserButton() {
       <Button
         leftIcon={<Puzzle />}
         color="teal"
-        size="xs"
         loading={isLoading || isConnecting}
         loaderPosition={isConnecting ? "right" : "left"}
         disabled={data || isError || isConnected}
@@ -78,8 +77,8 @@ export default function BrowserButton() {
         {isLoading
           ? "We are checking for the extension"
           : !isConnected
-          ? "Connect to Vesta"
-          : "Connected to Vesta"}
+          ? "Connect to Vesta Chrome Extension"
+          : "Connected to Vesta Chrome Extension"}
       </Button>
       {isError && (
         <Text mt="sm" color="red" size="sm">
@@ -88,7 +87,7 @@ export default function BrowserButton() {
       )}
       {isConnected && (
         <Text mt="sm" color="green" size="sm">
-          Browser extension is connected with Vesta.
+          Extension is connected with Vesta.
         </Text>
       )}
       {!isConnected && (
