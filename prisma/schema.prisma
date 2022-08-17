@@ -16,7 +16,7 @@ model keep {
   sort_no    Int?
   user_id    String?   @db.Uuid
   profile    profile?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Link       Link[] 
+  link       link[] 
 }
   
 model profile {
@@ -28,7 +28,7 @@ model profile {
   Keeps      keep[]
 }
 
-model Link {
+model link {
   id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title       String?
   description String?

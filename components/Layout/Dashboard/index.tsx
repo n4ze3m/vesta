@@ -18,6 +18,8 @@ import {
   Indicator,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import { Auth } from "@supabase/ui";
+import { supabase } from "lib/supabase";
 import { useRouter } from "next/router";
 import React from "react";
 import {
@@ -36,9 +38,8 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark"
         ? theme.colors.dark[6]
         : theme.colors.gray[0],
-    borderBottom: `1px solid ${
-      theme.colorScheme === "dark" ? "transparent" : theme.colors.gray[2]
-    }`,
+    borderBottom: `1px solid ${theme.colorScheme === "dark" ? "transparent" : theme.colors.gray[2]
+      }`,
   },
 
   mainSection: {
@@ -97,9 +98,8 @@ const useStyles = createStyles((theme) => ({
   },
 
   tabControlActive: {
-    borderColor: `${
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[2]
-    } !important`,
+    borderColor: `${theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[2]
+      } !important`,
   },
 }));
 
@@ -170,6 +170,7 @@ const data = [
   },
 ];
 function DashboardLayout({ children, user }: Props) {
+  const session = Auth.useUser()
   const router = useRouter();
   const theme = useMantineTheme();
   const [opened, setOpened] = React.useState(false);
@@ -251,7 +252,7 @@ function DashboardLayout({ children, user }: Props) {
                       <Avatar
                         radius="xl"
                         size={30}
-                        src={`https://vercel.com/api/www/avatar/${userId}?&s=120`}
+                        src={`https://vercel.com/api/www/avatar/${session?.user?.id || "test"}?&s=120`}
                       />
                       <ChevronDown size={12} />
                     </Group>
@@ -262,7 +263,7 @@ function DashboardLayout({ children, user }: Props) {
                 <Menu.Item
                   onClick={() => router.push("/settings")}
                   icon={<Settings size={14} />}
-                >
+                > 
                   Account settings
                 </Menu.Item>
 
@@ -270,7 +271,10 @@ function DashboardLayout({ children, user }: Props) {
 
                 <Menu.Label>Danger zone</Menu.Label>
                 <Menu.Item
-                  onClick={() => router.push("/api/logout")}
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    router.push("/login");
+                  }}
                   color="red"
                   icon={<Logout size={14} />}
                 >

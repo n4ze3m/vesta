@@ -1,18 +1,18 @@
 import { Container, Button } from "@mantine/core";
+import CommonKeepDnd from "components/Common/CommonDnd";
+import KeepLoading from "components/Common/Loading";
 import React from "react";
 import CreateKeep from "./CreateKeepModal";
 
-export default function DashboardHome() {
+export default function DashboardHome({status, data}  : any) {
   const [opened, setOpened] = React.useState(false);
-
-
 
   return (
     <Container>
       <CreateKeep opened={opened} onClose={() => setOpened(false)} />
-      {/* {isLoading && <KeepLoading />}
+      {status === "loading" && <KeepLoading />}
 
-      {!isLoading && (
+      {status === "success" && (
         <>
           <Button
             onClick={() => setOpened(true)}
@@ -25,7 +25,7 @@ export default function DashboardHome() {
           <br />
           <CommonKeepDnd type="inbox" data={data!} />
         </>
-      )} */}
+      )}
     </Container>
   );
 }

@@ -12,13 +12,13 @@ import UpdateModal from "../Common/UpdateModal";
 import { useForm, formList } from "@mantine/form";
 import LinkPreview from "../Common/LinkPreview";
 import { useLocalStorage } from "@mantine/hooks";
-import {
-  useWhenKeepDownMutation,
-  useWhenKeepUpMutation,
-  useDeleteKeepMutation,
-  useUpdateKeepMutation,
-  useMoveKeepsMutation,
-} from "graphql/generated/graphql";
+// import {
+//   useWhenKeepDownMutation,
+//   useWhenKeepUpMutation,
+//   useDeleteKeepMutation,
+//   useUpdateKeepMutation,
+//   useMoveKeepsMutation,
+// } from "graphql/generated/graphql";
 import { queryClient } from "pages/_app";
 import { useRouter } from "next/router";
 import Empty from "./Empty";
@@ -81,30 +81,30 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
   const [showUIElements, setShowUIElements] = React.useState(true);
   const [showUpdateModal, setShowUpdateModal] = React.useState(false);
   const [updateModalData, setUpdateModalData] = React.useState({});
-  const keeps = data.getKeepsByType;
+  const keeps = data;
   const [userId] = useLocalStorage({
     key: "userId",
   });
 
-  const { mutateAsync: whenKeepDownMutation } = useWhenKeepDownMutation();
+  // const { mutateAsync: whenKeepDownMutation } = useWhenKeepDownMutation();
 
-  const { mutateAsync: whenKeepUpMutation } = useWhenKeepUpMutation();
+  // const { mutateAsync: whenKeepUpMutation } = useWhenKeepUpMutation();
 
-  const { mutateAsync: deleteKeepMutation } = useDeleteKeepMutation({
-    onSuccess(data) {
-      // refetch the data
-      queryClient.refetchQueries("GetKeepsQuery");
-    },
-  });
+  // const { mutateAsync: deleteKeepMutation } = useDeleteKeepMutation({
+  //   onSuccess(data) {
+  //     // refetch the data
+  //     queryClient.refetchQueries("GetKeepsQuery");
+  //   },
+  // });
 
-  const { mutateAsync: updateKeepMutation } = useUpdateKeepMutation({
-    onSuccess(data) {
-      // refetch the data
-      // queryClient.refetchQueries("GetKeepsQuery");
-    },
-  });
+  // const { mutateAsync: updateKeepMutation } = useUpdateKeepMutation({
+  //   onSuccess(data) {
+  //     // refetch the data
+  //     // queryClient.refetchQueries("GetKeepsQuery");
+  //   },
+  // });
 
-  const { mutateAsync: moveKeepsMutation } = useMoveKeepsMutation({});
+  // const { mutateAsync: moveKeepsMutation } = useMoveKeepsMutation({});
 
   const form = useForm({
     initialValues: {
@@ -151,10 +151,10 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                     // }}
                     onBlur={async () => {
                       const keep = form.values.keep[index];
-                      await updateKeepMutation({
-                        id: keep.id,
-                        note: keep.note,
-                      });
+                      // await updateKeepMutation({
+                      //   id: keep.id,
+                      //   note: keep.note,
+                      // });
                     }}
                   />
                 )}
@@ -168,12 +168,12 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                       let current_keep_type = item.keep_type;
                       let keep_id = item.id;
                       form.removeListItem("keep", index);
-                      await moveKeepsMutation({
-                        current_keep_type,
-                        keep_id,
-                        new_keep_type: "inbox",
-                        user_id: userId,
-                      });
+                      // await moveKeepsMutation({
+                      //   current_keep_type,
+                      //   keep_id,
+                      //   new_keep_type: "inbox",
+                      //   user_id: userId,
+                      // });
                     }}
                     icon={<Mailbox size={14} />}
                   >
@@ -187,12 +187,12 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                       let current_keep_type = item.keep_type;
                       let keep_id = item.id;
                       form.removeListItem("keep", index);
-                      await moveKeepsMutation({
-                        current_keep_type,
-                        keep_id,
-                        new_keep_type: "link",
-                        user_id: userId,
-                      });
+                      // await moveKeepsMutation({
+                      //   current_keep_type,
+                      //   keep_id,
+                      //   new_keep_type: "link",
+                      //   user_id: userId,
+                      // });
                     }}
                     icon={<Link size={14} />}
                   >
@@ -206,12 +206,12 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                       let current_keep_type = item.keep_type;
                       let keep_id = item.id;
                       form.removeListItem("keep", index);
-                      await moveKeepsMutation({
-                        current_keep_type,
-                        keep_id,
-                        new_keep_type: "archive",
-                        user_id: userId,
-                      });
+                      // await moveKeepsMutation({
+                      //   current_keep_type,
+                      //   keep_id,
+                      //   new_keep_type: "archive",
+                      //   user_id: userId,
+                      // });
                     }}
                     icon={<Archive size={14} />}
                   >
@@ -226,11 +226,11 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                   onClick={async () => {
                     const id = item.id;
                     form.removeListItem("keep", index);
-                    await deleteKeepMutation({
-                      id,
-                      user_id: userId,
-                      keep_type: type,
-                    });
+                    // await deleteKeepMutation({
+                    //   id,
+                    //   user_id: userId,
+                    //   keep_type: type,
+                    // });
                   }}
                   color="red"
                   icon={<Trash size={14} />}
@@ -260,22 +260,22 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
             });
             if (movement(source.index, destination.index) === "up") {
               const keep_id = form.values.keep[source.index].id;
-              await whenKeepUpMutation({
-                keep_id: keep_id,
-                newPosition: destination.index + 1,
-                oldPosition: source.index + 1,
-                user_id: userId,
-                keep_type: type,
-              });
+              // await whenKeepUpMutation({
+              //   keep_id: keep_id,
+              //   newPosition: destination.index + 1,
+              //   oldPosition: source.index + 1,
+              //   user_id: userId,
+              //   keep_type: type,
+              // });
             } else if (movement(source.index, destination.index) === "down") {
               const keep_id = form.values.keep[source.index].id;
-              await whenKeepDownMutation({
-                keep_id: keep_id,
-                newPosition: destination.index + 1,
-                oldPosition: source.index + 1,
-                user_id: userId,
-                keep_type: type,
-              });
+              // await whenKeepDownMutation({
+              //   keep_id: keep_id,
+              //   newPosition: destination.index + 1,
+              //   oldPosition: source.index + 1,
+              //   user_id: userId,
+              //   keep_type: type,
+              // });
             }
 
             // console.log(source.index, destination.index, movement(source.index, destination.index));

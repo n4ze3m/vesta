@@ -41,9 +41,7 @@ const Home: NextPage = ({ a }: any) => {
       <Head>
         <title>Home / Dashboard</title>
       </Head>
-      {
-        JSON.stringify(data)
-      }
+      <DashboardHome status={status} data={data || []} />
     </DashboardLayout>
   );
 };
