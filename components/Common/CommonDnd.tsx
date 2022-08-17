@@ -8,18 +8,8 @@ import {
   Mailbox,
   Trash,
 } from "tabler-icons-react";
-import UpdateModal from "../Common/UpdateModal";
 import { useForm, formList } from "@mantine/form";
 import LinkPreview from "../Common/LinkPreview";
-import { useLocalStorage } from "@mantine/hooks";
-// import {
-//   useWhenKeepDownMutation,
-//   useWhenKeepUpMutation,
-//   useDeleteKeepMutation,
-//   useUpdateKeepMutation,
-//   useMoveKeepsMutation,
-// } from "graphql/generated/graphql";
-import { queryClient } from "pages/_app";
 import { useRouter } from "next/router";
 import Empty from "./Empty";
 import { useMutation } from "react-query";
@@ -81,16 +71,19 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
   const { classes, cx } = useStyles();
   const router = useRouter();
   const [showUIElements, setShowUIElements] = React.useState(true);
-  const [showUpdateModal, setShowUpdateModal] = React.useState(false);
-  const [updateModalData, setUpdateModalData] = React.useState({});
   const keeps = data;
   const { user } = Auth.useUser();
 
-  // const { mutateAsync: whenKeepDownMutation } = useWhenKeepDownMutation();
-
-  // const { mutateAsync: whenKeepUpMutation } = useWhenKeepUpMutation();
-
-  const deleteKeep = async (keep_id: string, keep_type: string) => {
+  const onDragFinish =  async (result: any) => {
+    await axios.post(`/api/keep/drag`, result, {
+      headers: {
+        user_id: user!.id,
+      }
+    })
+  }
+  const { mutateAsync: whenMoveMutation } = useMutation(onDragFinish);
+  
+  const deleteKeep = async ({ keep_id, keep_type }: any) => {
     await axios.post(`/api/keep/delete`, {
       keep_id,
       keep_type,
@@ -100,18 +93,22 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
       }
     })
   }
-  const { mutateAsync: deleteKeepMutation } = useMutation(deleteKeep,{
-    onSuccess(data) {
 
-    },
-  });
+  const updateKeep = async ({ keep_id, note }: any) => {
+    await axios.post(`/api/keep/update`, {
+      keep_id,
+      note,
+    }, {
+      headers: {
+        user_id: user!.id,
+      }
+    })
+  }
 
-  // const { mutateAsync: updateKeepMutation } = useUpdateKeepMutation({
-  //   onSuccess(data) {
-  //     // refetch the data
-  //     // queryClient.refetchQueries("GetKeepsQuery");
-  //   },
-  // });
+
+  const { mutateAsync: deleteKeepMutation } = useMutation(deleteKeep);
+
+  const { mutateAsync: updateKeepMutation } = useMutation(updateKeep);
 
   // const { mutateAsync: moveKeepsMutation } = useMoveKeepsMutation({});
 
@@ -155,15 +152,12 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                     autosize
                     {...form.getListInputProps("keep", index, "note")}
                     onDoubleClick={() => { }}
-                    // onFocus={() => {
-                    //   console.log("im focused");
-                    // }}
                     onBlur={async () => {
                       const keep = form.values.keep[index];
-                      // await updateKeepMutation({
-                      //   id: keep.id,
-                      //   note: keep.note,
-                      // });
+                      await updateKeepMutation({
+                        keep_id: keep.id,
+                        note: keep.note,
+                      });
                     }}
                   />
                 )}
@@ -233,12 +227,14 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                 <Menu.Label>Danger zone</Menu.Label>
                 <Menu.Item
                   onClick={async () => {
-                    const id = item.id;
+                    const keep_id = item.id;
                     const keep_type = item.keep_type;
                     form.removeListItem("keep", index);
                     await deleteKeepMutation(
-                      id,
-                      keep_type
+                      {
+                        keep_id,
+                        keep_type
+                      }
                     );
                   }}
                   color="red"
@@ -255,11 +251,6 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
   ));
   return (
     <>
-      <UpdateModal
-        opened={showUpdateModal}
-        onClose={() => setShowUpdateModal(false)}
-        data={updateModalData}
-      />
       <DragDropContext
         onDragEnd={async ({ destination, source, mode }) => {
           if (destination) {
@@ -267,27 +258,25 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
               from: source.index,
               to: destination.index,
             });
-            if (movement(source.index, destination.index) === "up") {
+            if (movement(source.index, destination.index) === "up" ) {
               const keep_id = form.values.keep[source.index].id;
-              // await whenKeepUpMutation({
-              //   keep_id: keep_id,
-              //   newPosition: destination.index + 1,
-              //   oldPosition: source.index + 1,
-              //   user_id: userId,
-              //   keep_type: type,
-              // });
+              await whenMoveMutation({
+                keep_id: keep_id,
+                newPosition: destination.index + 1,
+                oldPosition: source.index + 1,
+                keep_type: type,
+                move: "down",
+              });
             } else if (movement(source.index, destination.index) === "down") {
               const keep_id = form.values.keep[source.index].id;
-              // await whenKeepDownMutation({
-              //   keep_id: keep_id,
-              //   newPosition: destination.index + 1,
-              //   oldPosition: source.index + 1,
-              //   user_id: userId,
-              //   keep_type: type,
-              // });
+              await whenMoveMutation({
+                keep_id: keep_id,
+                newPosition: destination.index + 1,
+                oldPosition: source.index + 1,
+                keep_type: type,
+                move: "up",
+              });
             }
-
-            // console.log(source.index, destination.index, movement(source.index, destination.index));
           }
         }}
       >

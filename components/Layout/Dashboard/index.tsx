@@ -29,6 +29,7 @@ import {
   ChevronDown,
   Logout,
   Link,
+  Home,
 } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
@@ -153,8 +154,7 @@ function MainLink({ icon, color, label, path }: MainLinkProps) {
   );
 }
 const data = [
-  { icon: <Mailbox size={16} />, color: "blue", label: "Keep", path: "/" },
-  // { icon: <Bell size={16} />, color: "violet", label: "Reminders" },
+  { icon: <Home size={16} />, color: "blue", label: "Home", path: "/" },
   { icon: <Link size={16} />, color: "teal", label: "Links", path: "/links" },
   {
     icon: <Archive size={16} />,
@@ -171,14 +171,15 @@ const data = [
 ];
 function DashboardLayout({ children, user }: Props) {
   const session = Auth.useUser()
+  const [avatar, setAvatar] = React.useState("https://avatars.dicebear.com/api/jdenticon/xdsds-sdsdsds-dsdsds.svg?background=%230000ff")
+  React.useEffect(() => {
+    setAvatar(`https://avatars.dicebear.com/api/jdenticon/${session.user?.id}.svg?background=%230000ff`)
+  },[session])
   const router = useRouter();
-  const theme = useMantineTheme();
   const [opened, setOpened] = React.useState(false);
   const { classes, cx } = useStyles();
   const [userMenuOpened, setUserMenuOpened] = React.useState(false);
-  const [userId] = useLocalStorage({
-    key: "userId",
-  });
+
   return (
     <AppShell
       styles={(theme) => ({
@@ -252,7 +253,7 @@ function DashboardLayout({ children, user }: Props) {
                       <Avatar
                         radius="xl"
                         size={30}
-                        src={`https://vercel.com/api/www/avatar/${session?.user?.id || "test"}?&s=120`}
+                        src={avatar}
                       />
                       <ChevronDown size={12} />
                     </Group>

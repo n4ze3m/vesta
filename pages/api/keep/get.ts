@@ -20,7 +20,7 @@ export default async function handler(req: any, res: any) {
                 link: true
             },
             orderBy: {
-                sort_no: "desc"
+                sort_no: "asc"
             }
         })
         res.json(keep);
