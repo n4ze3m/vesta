@@ -38,7 +38,7 @@ export default function RegisterBody() {
   const { mutate: register, isLoading } = useMutation(onRegister, {
     onSuccess: ({id}) => {
       showNotification({
-        message: "Welcome to Keeppt",
+        message: "Welcome to Vesta",
         color: "green",
         title: "Success",
       });
@@ -82,7 +82,7 @@ export default function RegisterBody() {
           fontWeight: 900,
         })}
       >
-        Join Keeppt
+        Join Vesta
       </Title>
       <Text color="dimmed" size="sm" align="center" mt={5}>
         Already have an account?{" "}

@@ -232,7 +232,7 @@ function DashboardLayout({ children }: Props) {
                   />
                 </MediaQuery>
                 <Indicator inline label="pre-alpha" offset={-4} size={12}>
-                  <Text onClick={() => router.push("/")}>keeppt</Text>
+                  <Text onClick={() => router.push("/")}>Vesta</Text>
                 </Indicator>
               </div>
               <Menu

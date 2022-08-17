@@ -7,7 +7,7 @@ const LoginPage: NextPage = () => {
   return (
     <LandingLayout>
       <Head>
-        <title>Login / Keeppt</title>
+        <title>Login / Vesta</title>
       </Head>
       <LoginBody />
     </LandingLayout>

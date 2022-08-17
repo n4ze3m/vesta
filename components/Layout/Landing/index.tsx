@@ -115,7 +115,7 @@ function LandingLayout({ children }: Props) {
               >
                 <Indicator inline label="pre-alpha" offset={-4} size={12}>
                   <Text
-                  >keeppt</Text>
+                  >Vesta</Text>
                 </Indicator>
               </div>
             </Group>

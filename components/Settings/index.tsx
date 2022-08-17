@@ -20,7 +20,7 @@ export default function SettingsBody() {
 
   return (
     <div className="p-3">
-      <SettingsCard title="Sync with Keeppt Browser extension" component={<BrowserButton />} />
+      <SettingsCard title="Sync with Vesta Browser extension" component={<BrowserButton />} />
       <SettingsCard title="Danger" color="red" component={<DangerZone />} />
     </div>
   );

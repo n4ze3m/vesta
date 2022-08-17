@@ -1,16 +1,16 @@
 import React from "react";
 import { useMantineTheme } from "@mantine/core";
 
-interface KeepptLogoProps extends React.ComponentPropsWithoutRef<"svg"> {
+interface VestaLogoProps extends React.ComponentPropsWithoutRef<"svg"> {
   variant?: "white" | "default";
   width?: number;
 }
 
-export function KeepptLogo({
+export function VestaLogo({
   variant = "default",
   width = 110,
   ...others
-}: KeepptLogoProps) {
+}: VestaLogoProps) {
   const theme = useMantineTheme();
   return (
     <svg

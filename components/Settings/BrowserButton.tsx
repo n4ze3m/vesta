@@ -78,8 +78,8 @@ export default function BrowserButton() {
         {isLoading
           ? "We are checking for the extension"
           : !isConnected
-          ? "Connect to Keeppt"
-          : "Connected to Keeppt"}
+          ? "Connect to Vesta"
+          : "Connected to Vesta"}
       </Button>
       {isError && (
         <Text mt="sm" color="red" size="sm">
@@ -88,14 +88,14 @@ export default function BrowserButton() {
       )}
       {isConnected && (
         <Text mt="sm" color="green" size="sm">
-          Browser extension is connected with Keeppt.
+          Browser extension is connected with Vesta.
         </Text>
       )}
       {!isConnected && (
         <Text mt="sm" size="sm">
-          Install keeppt chrome extension from{" "}
+          Install Vesta chrome extension from{" "}
           <Anchor
-            href="https://chrome.google.com/webstore/detail/keeppt/padcmadjpiaojlpieildhchmlpbcponf"
+            href="https://chrome.google.com/webstore/detail/Vesta/padcmadjpiaojlpieildhchmlpbcponf"
             target="_blank"
           >
             Chrome Web Store
