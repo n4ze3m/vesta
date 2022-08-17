@@ -8,12 +8,12 @@ import { useForm } from "@mantine/form";
 import { Auth } from "@supabase/ui";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
-interface CreateKeepProps {
+interface CreateVestaProps {
   onClose: () => void;
   opened: boolean;
 }
 
-export default function CreateKeep({ onClose, opened }: CreateKeepProps) {
+export default function CreateVesta({ onClose, opened }: CreateVestaProps) {
   const { user } = Auth.useUser()
 
   const client = useQueryClient()
@@ -31,7 +31,7 @@ export default function CreateKeep({ onClose, opened }: CreateKeepProps) {
     })
   }
 
-  const { mutate: createKeep, isLoading } = useMutation(onSubmit, {
+  const { mutate: createVesta, isLoading } = useMutation(onSubmit, {
     onSuccess: () => {
       client.refetchQueries("fetchInbox")
       onClose();
@@ -43,23 +43,23 @@ export default function CreateKeep({ onClose, opened }: CreateKeepProps) {
 
 
   return (
-    <Modal title="Create Keep" size="lg" opened={opened} onClose={onClose}>
+    <Modal title="Add link or note" size="lg" opened={opened} onClose={onClose}>
       <form
-        onSubmit={form.onSubmit(async (values) => createKeep(values))}
+        onSubmit={form.onSubmit(async (values) => createVesta(values))}
       >
         <Textarea
           {...form.getInputProps("note")}
           autosize
           minRows={2}
           maxRows={8}
-          placeholder="Your keep..."
+          placeholder="Your link or note..."
           required
         />
         <Group position="right" mt="md">
           <Button
             loading={isLoading}
             color="teal" type="submit" size="md">
-            Create Keep
+            Add
           </Button>
         </Group>
       </form>

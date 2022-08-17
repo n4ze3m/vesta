@@ -2,9 +2,9 @@ import { Container, Button } from "@mantine/core";
 import CommonKeepDnd from "components/Common/CommonDnd";
 import KeepLoading from "components/Common/Loading";
 import React from "react";
-import CreateKeep from "./CreateKeepModal";
+import CreateKeep from "./CreateVestModal";
 
-export default function DashboardHome({status, data}  : any) {
+export default function DashboardHome({ status, data }: any) {
   const [opened, setOpened] = React.useState(false);
 
   return (
@@ -20,7 +20,7 @@ export default function DashboardHome({status, data}  : any) {
             variant="outline"
             color="gray"
           >
-            Click to add keep
+            Click to add a link or a note
           </Button>
           <br />
           <CommonKeepDnd type="inbox" data={data!} />
