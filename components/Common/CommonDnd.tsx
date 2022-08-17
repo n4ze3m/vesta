@@ -22,6 +22,9 @@ import { useLocalStorage } from "@mantine/hooks";
 import { queryClient } from "pages/_app";
 import { useRouter } from "next/router";
 import Empty from "./Empty";
+import { useMutation } from "react-query";
+import axios from "axios";
+import { Auth } from "@supabase/ui";
 
 const movement = (source: number, destination: number) => {
   if (source < destination) {
@@ -36,9 +39,8 @@ const movement = (source: number, destination: number) => {
 const useStyles = createStyles((theme) => ({
   item: {
     borderRadius: theme.radius.md,
-    border: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
-    }`,
+    border: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
+      }`,
     paddingLeft: theme.spacing.xl - theme.spacing.md, // to offset drag handle
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.white,
@@ -82,20 +84,27 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
   const [showUpdateModal, setShowUpdateModal] = React.useState(false);
   const [updateModalData, setUpdateModalData] = React.useState({});
   const keeps = data;
-  const [userId] = useLocalStorage({
-    key: "userId",
-  });
+  const { user } = Auth.useUser();
 
   // const { mutateAsync: whenKeepDownMutation } = useWhenKeepDownMutation();
 
   // const { mutateAsync: whenKeepUpMutation } = useWhenKeepUpMutation();
 
-  // const { mutateAsync: deleteKeepMutation } = useDeleteKeepMutation({
-  //   onSuccess(data) {
-  //     // refetch the data
-  //     queryClient.refetchQueries("GetKeepsQuery");
-  //   },
-  // });
+  const deleteKeep = async (keep_id: string, keep_type: string) => {
+    await axios.post(`/api/keep/delete`, {
+      keep_id,
+      keep_type,
+    }, {
+      headers: {
+        user_id: user!.id,
+      }
+    })
+  }
+  const { mutateAsync: deleteKeepMutation } = useMutation(deleteKeep,{
+    onSuccess(data) {
+
+    },
+  });
 
   // const { mutateAsync: updateKeepMutation } = useUpdateKeepMutation({
   //   onSuccess(data) {
@@ -145,7 +154,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                     variant="unstyled"
                     autosize
                     {...form.getListInputProps("keep", index, "note")}
-                    onDoubleClick={() => {}}
+                    onDoubleClick={() => { }}
                     // onFocus={() => {
                     //   console.log("im focused");
                     // }}
@@ -225,12 +234,12 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                 <Menu.Item
                   onClick={async () => {
                     const id = item.id;
+                    const keep_type = item.keep_type;
                     form.removeListItem("keep", index);
-                    // await deleteKeepMutation({
-                    //   id,
-                    //   user_id: userId,
-                    //   keep_type: type,
-                    // });
+                    await deleteKeepMutation(
+                      id,
+                      keep_type
+                    );
                   }}
                   color="red"
                   icon={<Trash size={14} />}
