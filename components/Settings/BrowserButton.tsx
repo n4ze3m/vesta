@@ -1,5 +1,6 @@
 import { Anchor, Button, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import { Auth } from "@supabase/ui";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
 import { Puzzle } from "tabler-icons-react";
@@ -8,15 +9,13 @@ export default function BrowserButton() {
   const [isConnected, setIsConnected] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState<string>();
 
-  const [userId] = useLocalStorage({
-    key: "userId",
-  });
+  const { user } = Auth.useUser();
 
   const checkBroswerConfig = () => {
     if (window !== undefined) {
       try {
         chrome.runtime.sendMessage(
-          "padcmadjpiaojlpieildhchmlpbcponf",
+          "hpilcdcjgadccijognjcadhppahbkcfp",
           { method: "connected" },
           function (response) {
             if (!window.chrome.runtime.lastError) {
@@ -54,8 +53,8 @@ export default function BrowserButton() {
 
   const onClick = async () => {
     chrome.runtime.sendMessage(
-      "padcmadjpiaojlpieildhchmlpbcponf",
-      { method: "connect", token: userId },
+      "hpilcdcjgadccijognjcadhppahbkcfp",
+      { method: "connect", token: user?.id },
       function (response) {
         setIsConnected(response.message);
       }
@@ -77,8 +76,8 @@ export default function BrowserButton() {
         {isLoading
           ? "We are checking for the extension"
           : !isConnected
-          ? "Connect to Vesta Chrome Extension"
-          : "Connected to Vesta Chrome Extension"}
+            ? "Connect to Vesta Chrome Extension"
+            : "Connected to Vesta Chrome Extension"}
       </Button>
       {isError && (
         <Text mt="sm" color="red" size="sm">
@@ -94,7 +93,7 @@ export default function BrowserButton() {
         <Text mt="sm" size="sm">
           Install Vesta chrome extension from{" "}
           <Anchor
-            href="https://chrome.google.com/webstore/detail/Vesta/padcmadjpiaojlpieildhchmlpbcponf"
+            href="https://chrome.google.com/webstore/detail/Vesta/hpilcdcjgadccijognjcadhppahbkcfp"
             target="_blank"
           >
             Chrome Web Store
