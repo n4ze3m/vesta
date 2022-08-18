@@ -14,7 +14,6 @@ export default async function handler(req: any, res: any) {
                 sort_no
             }
         })
-        console.log(data)
         await database.link.create({
             data: {
                 ...data,
