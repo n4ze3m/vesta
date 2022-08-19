@@ -9,7 +9,6 @@ import {
   Text,
   ThemeIcon,
   UnstyledButton,
-  useMantineTheme,
   createStyles,
   Container,
   Divider,
@@ -17,13 +16,11 @@ import {
   Avatar,
   Indicator,
 } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
 import { Auth } from "@supabase/ui";
 import { supabase } from "lib/supabase";
 import { useRouter } from "next/router";
 import React from "react";
 import {
-  Mailbox,
   Archive,
   Settings,
   ChevronDown,
@@ -31,6 +28,7 @@ import {
   Link,
   Home,
 } from "tabler-icons-react";
+import Search from "./Search";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -288,6 +286,7 @@ function DashboardLayout({ children }: Props) {
         </Header>
       }
     >
+      <Search />
       {children}
     </AppShell>
   );
