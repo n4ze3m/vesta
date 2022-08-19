@@ -1,0 +1,3 @@
+[submodule "extension"]
+	path = extension
+	url = https://github.com/n4ze3m/vesta-extension.git
