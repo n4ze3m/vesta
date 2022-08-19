@@ -173,7 +173,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
             </div>
             <div className="align-items-right">
               <Menu trigger="hover" delay={200}>
-                {router.pathname !== "/" && (
+                {router.pathname !== "/home" && (
                   <Menu.Item
                     onClick={async () => {
                       let current_keep_type = item.keep_type;
