@@ -15,8 +15,9 @@ import {
   Menu,
   Avatar,
   Indicator,
+  ActionIcon,
 } from "@mantine/core";
-import { Auth } from "@supabase/ui";
+import { Auth,  } from "@supabase/ui";
 import { supabase } from "lib/supabase";
 import { useRouter } from "next/router";
 import React from "react";
@@ -27,8 +28,9 @@ import {
   Logout,
   Link,
   Home,
+  Search,
 } from "tabler-icons-react";
-import Search from "./Search";
+import SearchBody from "./Search";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -167,10 +169,13 @@ const data = [
   },
 ];
 function DashboardLayout({ children }: Props) {
+  const [open, setOpen] = React.useState(false)
+  const [email, setEmail] = React.useState("...")
   const session = Auth.useUser()
   const [avatar, setAvatar] = React.useState("https://avatars.dicebear.com/api/jdenticon/xdsds-sdsdsds-dsdsds.svg?background=%230000ff")
   React.useEffect(() => {
     setAvatar(`https://avatars.dicebear.com/api/jdenticon/${session.user?.id}.svg?background=%230000ff`)
+    setEmail(session.user?.email || "...")
   }, [session])
   const router = useRouter();
   const [opened, setOpened] = React.useState(false);
@@ -235,58 +240,71 @@ function DashboardLayout({ children }: Props) {
                     onClick={() => router.push("/")}>Vesta</Text>
                 </Indicator>
               </div>
-              <Menu
-                size={260}
-                placement="end"
-                transition="pop-top-right"
-                className={classes.userMenu}
-                onClose={() => setUserMenuOpened(false)}
-                onOpen={() => setUserMenuOpened(true)}
-                control={
-                  <UnstyledButton
-                    className={cx(classes.user, {
-                      [classes.userActive]: userMenuOpened,
-                    })}
+              <Group position="right">
+                <ActionIcon
+                  onClick={() => setOpen(true)}
+                >
+                  <Search />
+                </ActionIcon>
+
+                <Menu
+                  size={260}
+                  placement="end"
+                  transition="pop-top-right"
+                  className={classes.userMenu}
+                  onClose={() => setUserMenuOpened(false)}
+                  onOpen={() => setUserMenuOpened(true)}
+                  control={
+                    <UnstyledButton
+                      className={cx(classes.user, {
+                        [classes.userActive]: userMenuOpened,
+                      })}
+                    >
+                      <Group spacing={7}>
+                        <Avatar
+                          radius="xl"
+                          size={30}
+                          src={avatar}
+                        />
+                        {email}
+                        <ChevronDown size={12} />
+                      </Group>
+                    </UnstyledButton>
+                  }
+                >
+                  <Menu.Label>Settings</Menu.Label>
+                  <Menu.Item
+                    onClick={() => router.push("/settings")}
+                    icon={<Settings size={14} />}
                   >
-                    <Group spacing={7}>
-                      <Avatar
-                        radius="xl"
-                        size={30}
-                        src={avatar}
-                      />
-                      <ChevronDown size={12} />
-                    </Group>
-                  </UnstyledButton>
-                }
-              >
-                <Menu.Label>Settings</Menu.Label>
-                <Menu.Item
-                  onClick={() => router.push("/settings")}
-                  icon={<Settings size={14} />}
-                >
-                  Account settings
-                </Menu.Item>
+                    Account settings
+                  </Menu.Item>
 
-                <Divider />
+                  <Divider />
 
-                <Menu.Label>Danger zone</Menu.Label>
-                <Menu.Item
-                  onClick={async () => {
-                    await supabase.auth.signOut();
-                    router.push("/login");
-                  }}
-                  color="red"
-                  icon={<Logout size={14} />}
-                >
-                  Logout
-                </Menu.Item>
-              </Menu>
+                  <Menu.Label>Danger zone</Menu.Label>
+                  <Menu.Item
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      router.push("/login");
+                    }}
+                    color="red"
+                    icon={<Logout size={14} />}
+                  >
+                    Logout
+                  </Menu.Item>
+                </Menu>
+              </Group>
             </Group>
           </Container>
         </Header>
       }
     >
-      <Search />
+      <SearchBody
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+      />
       {children}
     </AppShell>
   );

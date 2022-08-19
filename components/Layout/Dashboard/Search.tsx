@@ -8,9 +8,16 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useQuery } from "react-query"
 
 
-export default function Search() {
-    const [open, setOpen] = React.useState(false)
-    useHotkeys('/', () => setOpen(true))
+interface ISearchProps {
+    open: boolean,
+    onOpen: () => void,
+    onClose: () => void,
+}
+
+export default function Search(
+    { open, onOpen, onClose }: ISearchProps
+) {
+    useHotkeys('/', () => onOpen())
     const supabase = useSupabaseClient()
     const { user } = Auth.useUser()
     const [searchText, setSearchText] = React.useState<string | null>()
@@ -26,8 +33,8 @@ export default function Search() {
     return (
         <Modal
             opened={open}
-            onClose={() => setOpen(false)}
-            size="55%"
+            onClose={() => onClose()}
+            size="lg"
             withCloseButton={false}
         >
             <div>
