@@ -21,7 +21,7 @@ Vesta is an open source Google Keep alternative that helps you to save notes and
 - Used supabase for authentication and database
 - Used Supabase JS and Prisma for querying database
 - Used Supabase UI for some UI components and statemanagement
-- Used Supabase rfc for full text search
+- Used Supabase rpc for full text search postgresql function
 
 
 ## Demo
