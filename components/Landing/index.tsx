@@ -83,7 +83,7 @@ export default function LandingBody() {
                 </h1>
 
                 <Text className={classes.description} color="dimmed">
-                    Vesta is an open source project that helps you to save your notes and links without any hassle.
+                    Vesta is an open source project that helps you to save notes and links without any hassle.
                 </Text>
 
                 <Group className={classes.controls}>

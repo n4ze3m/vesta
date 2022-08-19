@@ -34,6 +34,8 @@ const Home: NextPage = () => {
     return response.data;
   }, {
     enabled: Boolean(user),
+    refetchIntervalInBackground: true,
+    refetchInterval: 5000,
   })
   return (
     <DashboardLayout>
