@@ -153,7 +153,7 @@ function MainLink({ icon, color, label, path }: MainLinkProps) {
   );
 }
 const data = [
-  { icon: <Home size={16} />, color: "blue", label: "Home", path: "/" },
+  { icon: <Home size={16} />, color: "blue", label: "Home", path: "/home" },
   { icon: <Link size={16} />, color: "teal", label: "Links", path: "/links" },
   {
     icon: <Archive size={16} />,
@@ -173,7 +173,7 @@ function DashboardLayout({ children }: Props) {
   const [avatar, setAvatar] = React.useState("https://avatars.dicebear.com/api/jdenticon/xdsds-sdsdsds-dsdsds.svg?background=%230000ff")
   React.useEffect(() => {
     setAvatar(`https://avatars.dicebear.com/api/jdenticon/${session.user?.id}.svg?background=%230000ff`)
-  },[session])
+  }, [session])
   const router = useRouter();
   const [opened, setOpened] = React.useState(false);
   const { classes, cx } = useStyles();
@@ -232,7 +232,9 @@ function DashboardLayout({ children }: Props) {
                   />
                 </MediaQuery>
                 <Indicator inline label="pre-alpha" offset={-4} size={12}>
-                  <Text onClick={() => router.push("/")}>Vesta</Text>
+                  <Text
+                    size="lg"
+                    onClick={() => router.push("/")}>Vesta</Text>
                 </Indicator>
               </div>
               <Menu
@@ -263,7 +265,7 @@ function DashboardLayout({ children }: Props) {
                 <Menu.Item
                   onClick={() => router.push("/settings")}
                   icon={<Settings size={14} />}
-                > 
+                >
                   Account settings
                 </Menu.Item>
 

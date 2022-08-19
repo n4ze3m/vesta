@@ -20,7 +20,7 @@ export default function DashboardHome({ status, data }: any) {
             variant="outline"
             color="gray"
           >
-            Click to add a link or a note
+            Add new note...
           </Button>
           <br />
           <CommonKeepDnd type="inbox" data={data!} />

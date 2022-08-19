@@ -4,8 +4,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
   Archive,
   GripVertical,
+  Home,
   Link,
-  Mailbox,
   Trash,
 } from "tabler-icons-react";
 import { useForm, formList } from "@mantine/form";
@@ -185,7 +185,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                         new_keep_type: "inbox",
                       });
                     }}
-                    icon={<Mailbox size={14} />}
+                    icon={<Home size={14} />}
                   >
                     Move to Home
                   </Menu.Item>
@@ -245,7 +245,9 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
                   color="red"
                   icon={<Trash size={14} />}
                 >
-                  Delete keep
+                  {
+                    `Delete ${item.is_link ? "link" : "note"}`
+                  }
                 </Menu.Item>
               </Menu>
             </div>
@@ -289,7 +291,7 @@ export default function CommonKeepDnd({ data, type }: CommonKeepDndProps) {
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {showUIElements && fields.length > 0 && fields}
-              {fields.length === 0 && <Empty text="Oops, Seems like you don't have any note / links here" />}
+              {fields.length === 0 && <Empty text="Oops, Seems like you don't have any notes / links here" />}
               {provided.placeholder}
             </div>
           )}
