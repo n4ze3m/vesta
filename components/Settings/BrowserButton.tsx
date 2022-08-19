@@ -1,5 +1,4 @@
 import { Anchor, Button, Text } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
 import { Auth } from "@supabase/ui";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
@@ -15,7 +14,7 @@ export default function BrowserButton() {
     if (window !== undefined) {
       try {
         chrome.runtime.sendMessage(
-          "hpilcdcjgadccijognjcadhppahbkcfp",
+          "eadmhecbafahnalckphaakaejbkabbbm",
           { method: "connected" },
           function (response) {
             if (!window.chrome.runtime.lastError) {
@@ -53,7 +52,7 @@ export default function BrowserButton() {
 
   const onClick = async () => {
     chrome.runtime.sendMessage(
-      "hpilcdcjgadccijognjcadhppahbkcfp",
+      "eadmhecbafahnalckphaakaejbkabbbm",
       { method: "connect", token: user?.id },
       function (response) {
         setIsConnected(response.message);
@@ -93,7 +92,7 @@ export default function BrowserButton() {
         <Text mt="sm" size="sm">
           Install Vesta chrome extension from{" "}
           <Anchor
-            href="https://chrome.google.com/webstore/detail/Vesta/hpilcdcjgadccijognjcadhppahbkcfp"
+            href="https://chrome.google.com/webstore/detail/eadmhecbafahnalckphaakaejbkabbbm?authuser=0&hl=en"
             target="_blank"
           >
             Chrome Web Store

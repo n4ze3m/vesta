@@ -1,4 +1,4 @@
-import { Card, Modal, TextInput } from "@mantine/core"
+import { Card, Kbd, Modal, TextInput } from "@mantine/core"
 import { Auth, IconSearch } from "@supabase/ui"
 import Empty from "components/Common/Empty"
 import LinkPreview from "components/Common/LinkPreview"
@@ -17,12 +17,17 @@ interface ISearchProps {
 export default function Search(
     { open, onOpen, onClose }: ISearchProps
 ) {
+    const rightSection = (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Kbd>/</Kbd>
+        </div>
+    );
     useHotkeys('/', () => onOpen())
     const supabase = useSupabaseClient()
     const { user } = Auth.useUser()
     const [searchText, setSearchText] = React.useState<string | null>()
     const search = async () => {
-        const response = await supabase.rpc('search_links', { keyword: searchText?.replaceAll(" ", " | "), u: user?.id })
+        const response = await supabase.rpc('search_links', { keyword: searchText?.trim().replaceAll(" ", " | "), u: user?.id })
         return response.data || []
     }
 
@@ -43,6 +48,9 @@ export default function Search(
                     onChange={(e) => setSearchText(e.target.value)}
                     icon={<IconSearch size={16} />}
                     placeholder="Search for a link..."
+                    rightSectionWidth={90}
+                    rightSection={rightSection}
+                    styles={{ rightSection: { pointerEvents: 'none' } }}
                 />
             </div>
             <div>
