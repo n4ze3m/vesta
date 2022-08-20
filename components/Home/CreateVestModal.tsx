@@ -5,9 +5,9 @@ import {
   Button,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useNotifications } from "@mantine/notifications";
 import { Auth } from "@supabase/ui";
 import axios from "axios";
-import { useSupabaseClient } from "lib/supabase";
 import { useMutation, useQueryClient } from "react-query";
 interface CreateVestaProps {
   onClose: () => void;
@@ -16,7 +16,6 @@ interface CreateVestaProps {
 
 export default function CreateVesta({ onClose, opened }: CreateVestaProps) {
   const { user } = Auth.useUser()
-  const supabase = useSupabaseClient()
 
   const client = useQueryClient()
 
@@ -26,18 +25,27 @@ export default function CreateVesta({ onClose, opened }: CreateVestaProps) {
     },
   });
   const onSubmit = async (values: any) => {
-    const response = await supabase.functions.invoke("parser", {
-      body: JSON.stringify({ url:  values.note }),
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
-    console.log(response)
-    // await axios.post("/api/keep/add", values, {
-    //   headers: {
-    //     user_id: user!.id,
-    //   }
-    // })
+    // check if values.note is url
+    const url = values.note.trim()
+    if (url.match(/^(http|https):\/\/[^ "]+$/)) {
+      console.log("valid url")
+      await axios.post("/api/keep/client-link", {
+        note: url,
+      }, {
+        headers: {
+          user_id: user!.id,
+        }
+      })
+    } else {
+      console.log("valid url")
+      await axios.post("/api/keep/add", {
+        note: values.note,
+      }, {
+        headers: {
+          user_id: user!.id,
+        }
+      })
+    }
   }
 
   const { mutate: createVesta, isLoading } = useMutation(onSubmit, {
@@ -46,6 +54,18 @@ export default function CreateVesta({ onClose, opened }: CreateVestaProps) {
       onClose();
       form.reset();
     },
+    onError: (e:any) => {
+           const message =
+        e?.response?.data?.message ||
+        e?.response?.data?.erorr ||
+        e?.message ||
+        "Unknown error";
+      showNotification({
+        message,
+        color: "red",
+        title: "Error",
+      });
+    }
   });
 
 

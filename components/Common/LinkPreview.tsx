@@ -3,8 +3,6 @@ import { Text, Badge, Image, createStyles } from "@mantine/core";
 const useStyles = createStyles((theme) => ({
   url: {
     fontSize: 10,
-    fontStyle: "italic",
-    
   },
 }));
 
@@ -24,7 +22,7 @@ export default function LinkPreview({ data }: any) {
       }}
       onClick={() => {
         if (window !== undefined) {
-          window.open(data.target_url, "_blank");
+          window.open(data?.target_url, "_blank");
         }
       }}
     >
@@ -33,7 +31,7 @@ export default function LinkPreview({ data }: any) {
           className="short"
         >
           {/* {trimTitle(data.title)} */}
-          {data.title}
+          {data?.title}
         </Text>
         <p
           style={{
@@ -41,14 +39,14 @@ export default function LinkPreview({ data }: any) {
           }}
           className="short"
         >
-          {data.description}
+          {data?.description}
         </p>
         <div className={classes.url}>{new URL(data.target_url).hostname}</div>
       </div>
       <div>
         <div className="ml-2">
           <Image
-            src={data.image}
+            src={data?.image}
             height={50}
             width={50}
             radius="md"
