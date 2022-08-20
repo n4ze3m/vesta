@@ -7,6 +7,7 @@ import {
 import { useForm } from "@mantine/form";
 import { Auth } from "@supabase/ui";
 import axios from "axios";
+import { useSupabaseClient } from "lib/supabase";
 import { useMutation, useQueryClient } from "react-query";
 interface CreateVestaProps {
   onClose: () => void;
@@ -15,6 +16,7 @@ interface CreateVestaProps {
 
 export default function CreateVesta({ onClose, opened }: CreateVestaProps) {
   const { user } = Auth.useUser()
+  const supabase = useSupabaseClient()
 
   const client = useQueryClient()
 
@@ -24,11 +26,18 @@ export default function CreateVesta({ onClose, opened }: CreateVestaProps) {
     },
   });
   const onSubmit = async (values: any) => {
-    await axios.post("/api/keep/add", values, {
+    const response = await supabase.functions.invoke("parser", {
+      body: JSON.stringify({ url:  values.note }),
       headers: {
-        user_id: user!.id,
+        "Content-Type": "application/json",
       }
     })
+    console.log(response)
+    // await axios.post("/api/keep/add", values, {
+    //   headers: {
+    //     user_id: user!.id,
+    //   }
+    // })
   }
 
   const { mutate: createVesta, isLoading } = useMutation(onSubmit, {
