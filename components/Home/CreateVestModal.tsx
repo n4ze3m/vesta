@@ -5,7 +5,7 @@ import {
   Button,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useNotifications } from "@mantine/notifications";
+import { showNotification, useNotifications } from "@mantine/notifications";
 import { Auth } from "@supabase/ui";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
