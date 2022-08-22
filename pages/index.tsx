@@ -18,7 +18,7 @@ const MainPage: NextPage = () => {
     return (
         <LandingLayout>
             <Head>
-                <title>Vesta</title>
+                <title>The Open Source Google Keep Alternative. / Vesta</title>
             </Head>
             <LandingBody />
         </LandingLayout>
