@@ -1,6 +1,5 @@
 import { createStyles, Text, SimpleGrid, Container } from '@mantine/core';
-import { IconSearch } from '@supabase/ui';
-import { BrandChrome, BrandOpenSource, SearchOff } from 'tabler-icons-react';
+import { BrandChrome, BrandOpenSource, Code } from 'tabler-icons-react';
 
 const useStyles = createStyles((theme) => ({
     supTitle: {
@@ -95,12 +94,12 @@ const features = [
     {
         icon: BrandChrome,
         title: 'Browser Extension',
-        description: 'Use Vesta chrome extension to save notes and links faster.'
+        description: 'Use Vesta chrome extension to save notes and bookmark links faster.'
     },
     {
-        icon: IconSearch,
-        title: 'Quick Search',
-        description: 'Search for bookmarked links by title, description, or url'
+        icon: Code,
+        title: 'Programmable API',
+        description: 'Vesta API is programmable and can be used to integrate with other applications.'
     },
     {
         icon: BrandOpenSource,

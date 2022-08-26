@@ -77,15 +77,14 @@ export default function LandingHero() {
                 <h1 className={classes.title}>
                     Start saving{' '}
                     <Text component="span" variant="gradient" gradient={{ from: 'teal', to: 'green' }} inherit>
-                        notes and links
+                        notes and bookmarks
                     </Text>{' '}
                     without any hassle.
                 </h1>
 
                 <Text className={classes.description} color="dimmed">
-                    Vesta is an open source Google Keep alternative that helps you to save quick notes and bookmark links.
+                    Vesta helps you to organize your notes and bookmarks.
                 </Text>
-
                 <Group className={classes.controls}>
                     <Button
                         size="xl"
